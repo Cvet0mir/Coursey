@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Coursey.Core/Coursey.Core.csproj" />
+  <Project Path="Coursey.Data/Coursey.Data.csproj" />
+  <Project Path="Coursey.ViewModels/Coursey.ViewModels.csproj" Id="b9716d60-1f60-4b86-a5a6-423675c5942a" />
+  <Project Path="Coursey/Coursey.csproj" />
+</Solution>

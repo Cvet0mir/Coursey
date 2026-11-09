@@ -1,0 +1,91 @@
+﻿@using Coursey.ViewModels.Course
+@model CourseDetailsViewModel
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Course Details</h2>
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                @Model.Name
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <dl class="row">
+
+                <dt class="col-sm-4">Course Name</dt>
+                <dd class="col-sm-8">@Model.Name</dd>
+
+                <dt class="col-sm-4">Subject</dt>
+                <dd class="col-sm-8">@Model.Subject</dd>
+
+                <dt class="col-sm-4">Start Date</dt>
+                <dd class="col-sm-8">
+                    @Model.StartDate.ToString("dd.MM.yyyy")
+                </dd>
+
+                <dt class="col-sm-4">End Date</dt>
+                <dd class="col-sm-8">
+                    @Model.EndDate.ToString("dd.MM.yyyy")
+                </dd>
+
+                <dt class="col-sm-4">Difficulty</dt>
+                <dd class="col-sm-8">
+                    @(Model.Difficulty ?? "Not specified")
+                </dd>
+
+                <dt class="col-sm-4">Teacher</dt>
+                <dd class="col-sm-8">@Model.TeacherName</dd>
+
+            </dl>
+
+            <hr />
+
+            <h5 class="mb-3">Enrolled Students</h5>
+
+            @if (Model.Students != null && Model.Students.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var student in Model.Students)
+                    {
+                        <li class="list-group-item">
+                            @student
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">
+                    There are no students enrolled in this course.
+                </p>
+            }
+
+        </div>
+
+        <div class="card-footer d-flex gap-2">
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back to Courses
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,92 @@
+﻿@using Coursey.ViewModels.Student
+@model List<StudentIndexViewModel>
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Students</h2>
+
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Student
+        </a>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Birth Date</th>
+                        <th>Favourite Subject</th>
+                        <th>Courses</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>@student.FirstName</td>
+                            <td>@student.LastName</td>
+                            <td>@student.Email</td>
+                            <td>@student.BirthDate.ToString("dd.MM.yyyy")</td>
+                            <td>@(student.FavouriteSubject ?? "Not specified")</td>
+                            <td>
+                                @if (student.Courses.Any())
+                                {
+                                    @string.Join(", ", student.Courses)
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No courses</span>
+                                }
+                            </td>
+
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@student.Id"
+                                       class="btn btn-sm btn-outline-info">
+                                        Details
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@student.Id"
+                                       class="btn btn-sm btn-outline-warning">
+                                        Edit
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@student.Id"
+                                       class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </a>
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No students were found.
+        </div>
+    }
+
+</div>

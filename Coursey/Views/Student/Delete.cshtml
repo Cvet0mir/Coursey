@@ -1,0 +1,60 @@
+﻿@using Coursey.ViewModels.Student
+@model StudentDeleteViewModel
+
+@{
+    ViewData["Title"] = "Delete Student";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Delete Student</h2>
+
+    <div class="card shadow-sm border-danger">
+
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Confirm Deletion</h5>
+        </div>
+
+        <div class="card-body">
+
+            <p class="text-danger">
+                Are you sure you want to delete this student?
+                This action cannot be undone.
+            </p>
+
+            <dl class="row">
+
+                <dt class="col-sm-4">Student ID</dt>
+                <dd class="col-sm-8">@Model.Id</dd>
+
+                <dt class="col-sm-4">First Name</dt>
+                <dd class="col-sm-8">@Model.FirstName</dd>
+
+                <dt class="col-sm-4">Last Name</dt>
+                <dd class="col-sm-8">@Model.LastName</dd>
+
+            </dl>
+
+            <form asp-action="Delete" method="post">
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="submit" class="btn btn-danger">
+                        Delete Student
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

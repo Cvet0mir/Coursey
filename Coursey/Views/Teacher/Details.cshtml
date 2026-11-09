@@ -1,0 +1,83 @@
+﻿@using Coursey.ViewModels.Teacher
+@model TeacherDetailsViewModel
+
+@{
+    ViewData["Title"] = "Teacher Details";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Teacher Details</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                @Model.FirstName @Model.LastName
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <dl class="row">
+
+                <dt class="col-sm-4">First Name</dt>
+                <dd class="col-sm-8">@Model.FirstName</dd>
+
+                <dt class="col-sm-4">Last Name</dt>
+                <dd class="col-sm-8">@Model.LastName</dd>
+
+                <dt class="col-sm-4">Main Subject</dt>
+                <dd class="col-sm-8">@Model.MainSubject</dd>
+
+                <dt class="col-sm-4">Years of Experience</dt>
+                <dd class="col-sm-8">@Model.YearsExperience</dd>
+
+                <dt class="col-sm-4">Address</dt>
+                <dd class="col-sm-8">
+                    @(Model.Address ?? "Not specified")
+                </dd>
+
+                <dt class="col-sm-4">Age</dt>
+                <dd class="col-sm-8">@Model.Age</dd>
+
+            </dl>
+
+            <hr />
+
+            <h5 class="mb-3">Courses</h5>
+
+            @if (Model.Courses != null && Model.Courses.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var course in Model.Courses)
+                    {
+                        <li class="list-group-item">
+                            @course
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">This teacher has no assigned courses.</p>
+            }
+
+        </div>
+
+        <div class="card-footer d-flex gap-2">
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back to Teachers
+            </a>
+
+        </div>
+    </div>
+
+</div>
