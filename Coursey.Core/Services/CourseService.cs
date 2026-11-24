@@ -19,6 +19,15 @@ namespace Coursey.Services
 
         public async Task<List<CourseIndexViewModel>> GetAllAsync()
         {
+            return await GetFilteredAsync();
+        }
+
+        public async Task<List<CourseIndexViewModel>> GetFilteredAsync(
+            string? search = null,
+            string? subject = null,
+            string? difficulty = null,
+            string? sortOrder = null)
+        {
             var query = _context.Courses
                 .Select(c => new CourseIndexViewModel
                 {
@@ -31,8 +40,59 @@ namespace Coursey.Services
                     TeacherName = c.Teacher.FirstName + " " + c.Teacher.LastName
                 });
 
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.Trim();
+
+                query = query.Where(c =>
+                    c.Name.Contains(search));
+            }
+
+            if (!string.IsNullOrWhiteSpace(subject))
+            {
+                subject = subject.Trim();
+
+                query = query.Where(c =>
+                    c.Subject.Contains(subject));
+            }
+
+            if (!string.IsNullOrWhiteSpace(difficulty))
+            {
+                difficulty = difficulty.Trim();
+
+                query = query.Where(c =>
+                    c.Difficulty != null &&
+                    c.Difficulty.Contains(difficulty));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_asc":
+                    query = query.OrderBy(c => c.Name);
+                    break;
+
+                case "name_desc":
+                    query = query.OrderByDescending(c => c.Name);
+                    break;
+
+                case "start_date":
+                    query = query.OrderBy(c => c.StartDate);
+                    break;
+
+                case "difficulty":
+                    query = query
+                        .OrderBy(c => c.Difficulty)
+                        .ThenBy(c => c.Name);
+                    break;
+
+                default:
+                    query = query.OrderBy(c => c.Name);
+                    break;
+            }
+
             return await query.ToListAsync();
         }
+
         public async Task<CourseDetailsViewModel?> GetDetailsAsync(int id)
         {
             return await _context.Courses
@@ -57,11 +117,13 @@ namespace Coursey.Services
         {
             ValidateDates(model.StartDate, model.EndDate);
 
-            var teacherExists = await _context.Teachers.AnyAsync(t => t.Id == model.TeacherId);
+            var teacherExists = await _context.Teachers
+                .AnyAsync(t => t.Id == model.TeacherId);
 
             if (!teacherExists)
             {
-                throw new InvalidOperationException($"Teacher with ID {model.TeacherId} not found.");
+                throw new InvalidOperationException(
+                    $"Teacher with ID {model.TeacherId} not found.");
             }
 
             var course = new Course
@@ -107,16 +169,22 @@ namespace Coursey.Services
         {
             ValidateDates(model.StartDate, model.EndDate);
 
-            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == model.Id);
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(c => c.Id == model.Id);
+
             if (course == null)
             {
-                throw new InvalidOperationException($"Course with ID {model.Id} not found.");
+                throw new InvalidOperationException(
+                    $"Course with ID {model.Id} not found.");
             }
 
-            var teacherExists = await _context.Teachers.AnyAsync(t => t.Id == model.TeacherId);
+            var teacherExists = await _context.Teachers
+                .AnyAsync(t => t.Id == model.TeacherId);
+
             if (!teacherExists)
             {
-                throw new InvalidOperationException($"Teacher with ID {model.TeacherId} not found.");
+                throw new InvalidOperationException(
+                    $"Teacher with ID {model.TeacherId} not found.");
             }
 
             course.Name = model.Name;
@@ -184,7 +252,5 @@ namespace Coursey.Services
                 Teachers = await GetTeachersAsync()
             };
         }
-
-
     }
 }

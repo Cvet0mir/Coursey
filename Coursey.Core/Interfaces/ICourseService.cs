@@ -1,15 +1,18 @@
 ﻿
 using Coursey.ViewModels.Course;
 using Coursey.ViewModels.Teacher;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Coursey.Services.Interfaces
 {
     public interface ICourseService
     {
         Task<List<CourseIndexViewModel>> GetAllAsync();
+
+        Task<List<CourseIndexViewModel>> GetFilteredAsync(
+            string? search = null,
+            string? subject = null,
+            string? difficulty = null,
+            string? sortOrder = null);
 
         Task<CourseDetailsViewModel?> GetDetailsAsync(int id);
 

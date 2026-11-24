@@ -20,6 +20,22 @@ namespace Coursey.Controllers
             return View(courses);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetFilteredCourses(
+            [FromQuery] string? search = null,
+            [FromQuery] string? subject = null,
+            [FromQuery] string? difficulty = null,
+            [FromQuery] string? sortOrder = null)
+        {
+            var courses = await _courseService.GetFilteredAsync(
+                search,
+                subject,
+                difficulty,
+                sortOrder);
+
+            return Json(courses);
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var course = await _courseService.GetDetailsAsync(id);
@@ -28,6 +44,7 @@ namespace Coursey.Controllers
             {
                 return NotFound();
             }
+
             return View(course);
         }
 
@@ -126,7 +143,6 @@ namespace Coursey.Controllers
             try
             {
                 await _courseService.DeleteAsync(id);
-
                 return RedirectToAction(nameof(Index));
             }
             catch (InvalidOperationException)

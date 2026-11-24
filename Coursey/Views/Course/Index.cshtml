@@ -15,24 +15,75 @@
         </a>
     </div>
 
-    @if (Model.Any())
-    {
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered align-middle">
+    <div class="row mb-4">
 
-                <thead class="table-dark">
-                    <tr>
-                        <th>Name</th>
-                        <th>Subject</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Difficulty</th>
-                        <th>Teacher</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
+        <div class="col-md-3">
+            <label for="search" class="form-label">Course Name</label>
+            <input type="text"
+                   id="search"
+                   class="form-control"
+                   placeholder="Search by course name..." />
+        </div>
 
-                <tbody>
+        <div class="col-md-3">
+            <label for="subject" class="form-label">Subject</label>
+            <input type="text"
+                   id="subject"
+                   class="form-control"
+                   placeholder="Search by subject..." />
+        </div>
+
+        <div class="col-md-2">
+            <label for="difficulty" class="form-label">Difficulty</label>
+            <input type="text"
+                   id="difficulty"
+                   class="form-control"
+                   placeholder="Search difficulty..." />
+        </div>
+
+        <div class="col-md-2">
+            <label for="sortOrder" class="form-label">Sort By</label>
+            <select id="sortOrder" class="form-select">
+                <option value="name_asc">Name A-Z</option>
+                <option value="name_desc">Name Z-A</option>
+                <option value="start_date">Start Date</option>
+                <option value="difficulty">Difficulty</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button"
+                    id="clearFilters"
+                    class="btn btn-secondary w-100">
+                Clear Filters
+            </button>
+        </div>
+
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Difficulty</th>
+                    <th>Teacher</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="coursesTable"
+                   data-url="@Url.Action("GetFilteredCourses", "Course")"
+                   data-details-url="@Url.Action("Details", "Course", new { id = "__id__" })"
+                   data-edit-url="@Url.Action("Edit", "Course", new { id = "__id__" })"
+                   data-delete-url="@Url.Action("Delete", "Course", new { id = "__id__" })">
+
+                @if (Model.Any())
+                {
                     @foreach (var course in Model)
                     {
                         <tr>
@@ -68,16 +119,23 @@
                             </td>
                         </tr>
                     }
-                </tbody>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No courses were found.
+                        </td>
+                    </tr>
+                }
 
-            </table>
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-info">
-            No courses were found.
-        </div>
-    }
+            </tbody>
+
+        </table>
+    </div>
 
 </div>
+
+@section Scripts {
+    <script src="~/js/courses.js" asp-append-version="true"></script>
+}
