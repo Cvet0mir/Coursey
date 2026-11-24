@@ -8,6 +8,30 @@ namespace Coursey.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Teacher> builder)
         {
+            builder
+                .Property(t => t.FirstName)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder 
+                .Property(t => t.LastName)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder
+                .Property(t => t.MainSubject)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder
+                .Property(t => t.YearsExperience)
+                .HasColumnName("Years of Experience")
+                .IsRequired();
+
+            builder
+                .Property(t => t.Address)
+                .HasMaxLength(150);
+
             builder.HasData(
                 new Teacher
                 {

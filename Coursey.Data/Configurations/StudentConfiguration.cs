@@ -1,6 +1,7 @@
 ﻿using Coursey.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
 namespace Coursey.Data.Configurations
 {
@@ -8,6 +9,28 @@ namespace Coursey.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Student> builder)
         {
+            builder
+                .Property(st => st.FirstName)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder
+                .Property(st => st.LastName)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder
+                .Property(st => st.Email)
+                .IsRequired();
+
+            builder
+                .Property(st => st.BirthDate)
+                .IsRequired();
+
+            builder
+                .Property(st => st.FavouriteSubject)
+                .HasMaxLength(100);
+
             builder.HasData(
                 new Student
                 {

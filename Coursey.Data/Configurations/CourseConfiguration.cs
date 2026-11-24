@@ -8,6 +8,34 @@ namespace Coursey.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {
+            builder
+                .Property(c => c.Name)
+                .HasMaxLength(150)
+                .IsRequired();
+
+            builder
+                .Property(c => c.Subject)
+                .HasMaxLength(150)
+                .IsRequired();
+
+            builder
+                .Property(c => c.StartDate)
+                .IsRequired();
+            
+            builder
+                .Property(c => c.EndDate)
+                .IsRequired();
+
+            builder
+                .Property(c => c.Difficulty)
+                .HasMaxLength(50);
+
+            builder
+                .HasOne(c => c.Teacher)
+                .WithMany(t => t.Courses)
+                .HasForeignKey(c => c.TeacherId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasData(
                 new Course
                 {

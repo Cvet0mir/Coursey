@@ -28,21 +28,6 @@ namespace Coursey.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<CourseStudent>()
-                .HasKey(cs => new { cs.CourseId, cs.StudentId });
-
-            modelBuilder.Entity<CourseStudent>()
-                .HasOne(cs => cs.Course)
-                .WithMany(c => c.CourseStudents)
-                .HasForeignKey(cs => cs.CourseId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<CourseStudent>()
-                .HasOne(cs => cs.Student)
-                .WithMany(s => s.CourseStudents)
-                .HasForeignKey(cs => cs.StudentId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.ApplyConfiguration(new TeacherConfiguration());
             modelBuilder.ApplyConfiguration(new CourseConfiguration());
             modelBuilder.ApplyConfiguration(new StudentConfiguration());
