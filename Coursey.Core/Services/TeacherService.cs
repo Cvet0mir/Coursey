@@ -157,6 +157,12 @@ namespace Coursey.Services
                 throw new InvalidOperationException($"Teacher with ID {id} not found.");
             }
 
+            bool hasCourses = _context.Courses.Any(c => c.TeacherId == teacher.Id);
+            if (hasCourses)
+            {
+                throw new InvalidOperationException("The teacher has courses. He cannot be deleted!");
+            }
+
             _context.Teachers.Remove(teacher);
             await _context.SaveChangesAsync();
         }

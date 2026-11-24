@@ -101,9 +101,10 @@ namespace Coursey.Controllers
             {
                 await _teacherService.DeleteAsync(id);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException exc)
             {
-                return NotFound();
+                TempData["Error"] = exc.Message;
+                return RedirectToAction(nameof(Index));
             }
 
             return RedirectToAction(nameof(Index));
